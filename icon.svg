@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#050508"/>
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#d4a017" stroke-width="2" stroke-dasharray="8 6" opacity="0.5"/>
+  <rect x="106" y="106" width="300" height="300" fill="none" stroke="#d4a017" stroke-width="2" stroke-dasharray="8 6" opacity="0.35"/>
+  <polygon points="256,96 396,356 116,356" fill="none" stroke="#f0b429" stroke-width="4"/>
+  <line x1="256" y1="96" x2="256" y2="356" stroke="#f0b429" stroke-width="2.5" opacity="0.9"/>
+  <line x1="116" y1="356" x2="396" y2="356" stroke="#f0b429" stroke-width="2.5" opacity="0.9"/>
+  <line x1="176" y1="226" x2="336" y2="226" stroke="#f0b429" stroke-width="2.5" opacity="0.9"/>
+  <line x1="196" y1="176" x2="316" y2="276" stroke="#f0b429" stroke-width="2" opacity="0.8"/>
+  <line x1="316" y1="176" x2="196" y2="276" stroke="#f0b429" stroke-width="2" opacity="0.8"/>
+  <circle cx="256" cy="96" r="8" fill="#ffd666"/>
+  <circle cx="396" cy="356" r="8" fill="#ffd666"/>
+  <circle cx="116" cy="356" r="8" fill="#ffd666"/>
+  <circle cx="256" cy="226" r="6" fill="#ffd666"/>
+  <circle cx="176" cy="226" r="5" fill="#ffd666"/>
+  <circle cx="336" cy="226" r="5" fill="#ffd666"/>
+</svg>
