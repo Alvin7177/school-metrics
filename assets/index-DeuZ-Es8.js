@@ -127,7 +127,7 @@
           </label>`:""}
           <button type="button" class="btn-go" id="login-submit">${n?"가입하기":"로그인"}</button>
           ${n?"":'<button type="button" class="link-btn" id="login-reset">비밀번호 찾기</button>'}
-          <p class="muted login-hint">예: 20261111@haeyeon.ms.kr<br/>가입 후 학교 메일로 온 인증 링크를 눌러야 로그인됩니다.</p>
+          <p class="muted login-hint">예: 20261111@haeyeon.ms.kr<br/>가입 후 학교 메일로 온 인증 링크를 눌러야 로그인됩니다.<br/>인증 메일이 스팸함에 있을 수 있으니 스팸함도 확인해 주세요.</p>
           <p class="warn hidden" id="login-error"></p>
           <p class="ok-msg hidden" id="login-ok"></p>
           <div class="login-verify-actions hidden" id="verify-actions">
