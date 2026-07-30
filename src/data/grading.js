@@ -1,19 +1,47 @@
 /** 예체능 과목 (음악·미술·체육) */
+import { getAdminSettings } from "../admin.js";
+
 export const ARTS_SUBJECTS = ["음악", "미술", "체육"];
 
-const STANDARD_SCALE = [
-  { letter: "A", min: 90, label: "A (90점 이상)" },
-  { letter: "B", min: 80, label: "B (80점 이상)" },
-  { letter: "C", min: 70, label: "C (70점 이상)" },
-  { letter: "D", min: 60, label: "D (60점 이상)" },
-  { letter: "E", min: 0, label: "E (60점 미만)" },
+const STANDARD_SCALE_DEFAULT = [
+  { letter: "A", min: 90 },
+  { letter: "B", min: 80 },
+  { letter: "C", min: 70 },
+  { letter: "D", min: 60 },
+  { letter: "E", min: 0 },
 ];
 
-const ARTS_SCALE = [
-  { letter: "A", min: 80, label: "A (80점 이상)" },
-  { letter: "B", min: 60, label: "B (60점 이상)" },
-  { letter: "C", min: 0, label: "C (60점 미만)" },
+const ARTS_SCALE_DEFAULT = [
+  { letter: "A", min: 80 },
+  { letter: "B", min: 60 },
+  { letter: "C", min: 0 },
 ];
+
+function withLabels(scale) {
+  return scale.map((r, i, arr) => {
+    const higher = arr[i - 1];
+    const label =
+      r.min === 0
+        ? `${r.letter} (${higher?.min ?? 60}점 미만)`
+        : `${r.letter} (${r.min}점 이상)`;
+    return { letter: r.letter, min: Number(r.min) || 0, label };
+  });
+}
+
+export function getStandardScale() {
+  const s = getAdminSettings().standardScale;
+  return withLabels(s?.length ? s : STANDARD_SCALE_DEFAULT);
+}
+
+export function getArtsScale() {
+  const s = getAdminSettings().artsScale;
+  return withLabels(s?.length ? s : ARTS_SCALE_DEFAULT);
+}
+
+/** @deprecated use getStandardScale / getArtsScale */
+export const STANDARD_SCALE = STANDARD_SCALE_DEFAULT;
+/** @deprecated use getArtsScale */
+export const ARTS_SCALE = ARTS_SCALE_DEFAULT;
 
 export function isArtsSubject(subject) {
   return ARTS_SUBJECTS.includes(subject);
@@ -25,7 +53,7 @@ export function roundScore(score) {
 }
 
 export function getScale(subject) {
-  return isArtsSubject(subject) ? ARTS_SCALE : STANDARD_SCALE;
+  return isArtsSubject(subject) ? getArtsScale() : getStandardScale();
 }
 
 export function scoreToLetter(score, subject) {
@@ -75,6 +103,9 @@ export function gradeCriteriaBar(subject = null) {
       : `${subject}은(는) 일반 과목 (A·B·C·D·E)`
   : "과목 유형에 따라 등급 기준이 다릅니다.";
 
+  const standard = getStandardScale();
+  const artsScale = getArtsScale();
+
   return `
     <div class="grade-criteria-wrap">
       <button type="button" class="grade-criteria-bar" data-toggle="criteria" aria-expanded="false">
@@ -88,7 +119,7 @@ export function gradeCriteriaBar(subject = null) {
             <tr><th colspan="2">일반 과목 (국·영·수·사·과 등)</th></tr>
           </thead>
           <tbody>
-            ${STANDARD_SCALE.map((r) => `<tr><td>${r.letter}</td><td>${r.min === 0 ? "60점 미만" : `${r.min}점 이상`}</td></tr>`).join("")}
+            ${standard.map((r) => `<tr><td>${r.letter}</td><td>${r.label.replace(/^[A-E]\s*/, "")}</td></tr>`).join("")}
           </tbody>
         </table>
         <table class="criteria-table">
@@ -96,7 +127,7 @@ export function gradeCriteriaBar(subject = null) {
             <tr><th colspan="2">예체능 (음악·미술·체육)</th></tr>
           </thead>
           <tbody>
-            ${ARTS_SCALE.map((r) => `<tr><td>${r.letter}</td><td>${r.min === 0 ? "60점 미만" : `${r.min}점 이상`}</td></tr>`).join("")}
+            ${artsScale.map((r) => `<tr><td>${r.letter}</td><td>${r.label.replace(/^[A-E]\s*/, "")}</td></tr>`).join("")}
           </tbody>
         </table>
       </div>

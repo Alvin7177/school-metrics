@@ -1,7 +1,6 @@
-import { REST_UNLOCK_USES } from "./config.js";
+import { getEffectiveUnlockUses, isAdminFreeGames } from "./admin.js";
 
 const SUBJECTS_KEY = "schoolMetricsUniqueSubjects";
-const QUOTE_INDEX_KEY = "schoolMetricsQuoteIndex";
 
 function loadSubjects() {
   try {
@@ -19,6 +18,7 @@ function saveSubjects(list) {
 
 /** 서로 다른 과목 계산 기록 (같은 과목은 1회만 인정) */
 export function recordSubjectCalculation(subject) {
+  const unlockUses = getEffectiveUnlockUses();
   const subjects = loadSubjects();
   const isNew = !subjects.includes(subject);
   if (isNew) {
@@ -28,7 +28,7 @@ export function recordSubjectCalculation(subject) {
   return {
     isNew,
     uniqueCount: subjects.length,
-    justUnlocked: isNew && subjects.length >= REST_UNLOCK_USES,
+    justUnlocked: isNew && subjects.length >= unlockUses,
   };
 }
 
@@ -41,23 +41,29 @@ export function getCalculatedSubjects() {
 }
 
 export function isRestUnlocked() {
-  return getUniqueSubjectCount() >= REST_UNLOCK_USES;
+  if (isAdminFreeGames()) return true;
+  return getUniqueSubjectCount() >= getEffectiveUnlockUses();
 }
 
 export function getUsesUntilRest() {
-  return Math.max(0, REST_UNLOCK_USES - getUniqueSubjectCount());
+  return Math.max(0, getEffectiveUnlockUses() - getUniqueSubjectCount());
 }
 
-/** 미니게임 이용 후 진행도 초기화 */
+/** 미니게임 이용 후 진행도 초기화 (관리자 자유 이용 시 유지) */
 export function lockRestAfterUse() {
+  if (isAdminFreeGames()) return;
   localStorage.removeItem(SUBJECTS_KEY);
 }
 
 export function getUnlockProgressText() {
+  const unlockUses = getEffectiveUnlockUses();
   const count = getUniqueSubjectCount();
   const remaining = getUsesUntilRest();
+  if (isAdminFreeGames()) {
+    return "관리자 모드: 미니게임 자유 이용";
+  }
   if (isRestUnlocked()) {
     return `서로 다른 과목 ${count}개 달성! 휴식 미니게임 이용 가능`;
   }
-  return `서로 다른 과목 ${remaining}개 더 계산하면 해금 (${count}/${REST_UNLOCK_USES})`;
+  return `서로 다른 과목 ${remaining}개 더 계산하면 해금 (${count}/${unlockUses})`;
 }

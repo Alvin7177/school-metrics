@@ -740,109 +740,133 @@ body {
   color: var(--gray);
 }
 
-.dart-stats, .cricket-stats {
+.dart-stats,
+.cricket-stats,
+.breakout-stats,
+.race-stats {
   display: flex;
   gap: 16px;
   font-size: 0.85rem;
   color: var(--green);
 }
 
-.dart-board {
-  position: relative;
-  width: min(260px, 80vw);
-  aspect-ratio: 1;
+.game-canvas,
+.dart-canvas {
+  width: min(320px, 92vw);
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid rgba(57, 255, 20, 0.25);
+  border-radius: 8px;
+  touch-action: none;
+  background: #000;
+}
+
+.dart-canvas {
   border-radius: 50%;
-  background: radial-gradient(circle, #111 0%, #000 70%);
-  border: 2px solid var(--green);
-  cursor: crosshair;
+  border: none;
+  background: transparent;
+}
+
+.aim-bars {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+}
+
+.aim-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+
+.aim-bar.active {
+  opacity: 1;
+}
+
+.aim-bar-v .aim-track {
+  width: 18px;
+  height: 120px;
+}
+
+.aim-bar-h .aim-track {
+  width: 120px;
+  height: 18px;
+}
+
+.aim-track {
+  position: relative;
+  background: #151515;
+  border: 1px solid rgba(57, 255, 20, 0.4);
+  border-radius: 10px;
   overflow: hidden;
 }
 
-.dart-ring {
+.aim-center {
   position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(57, 255, 20, 0.3);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-}
-.ring-outer { width: 96%; height: 96%; }
-.ring-mid { width: 64%; height: 64%; }
-.ring-inner { width: 32%; height: 32%; }
-
-.dart-bull {
-  position: absolute;
-  width: 12%; height: 12%;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: var(--red);
-}
-
-.dart-mark {
-  position: absolute;
-  width: 8px; height: 8px;
-  margin: -4px 0 0 -4px;
-  border-radius: 50%;
-  background: #fff;
+  background: rgba(255, 244, 26, 0.35);
   pointer-events: none;
 }
 
-.mine-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
-  width: min(280px, 90vw);
+.aim-bar-v .aim-center {
+  left: 0;
+  right: 0;
+  top: 42%;
+  height: 16%;
 }
 
-.mine-cell {
-  aspect-ratio: 1;
-  border: 1px solid rgba(57, 255, 20, 0.25);
-  background: #0a0a0a;
-  color: var(--green);
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 0;
-}
-.mine-cell.open { background: rgba(57, 255, 20, 0.08); }
-.mine-cell.flag { color: var(--orange); }
-.mine-cell.mine { background: rgba(255, 45, 85, 0.3); }
-
-.cricket-lane {
-  position: relative;
-  width: min(280px, 90vw);
-  height: 44px;
-  background: #111;
-  border: 1px solid rgba(57, 255, 20, 0.3);
-  overflow: hidden;
-}
-
-.cricket-zone {
-  position: absolute;
-  top: 5px;
+.aim-bar-h .aim-center {
+  top: 0;
+  bottom: 0;
+  left: 42%;
   width: 16%;
-  height: calc(100% - 10px);
-  transform: translateX(-50%);
-  background: rgba(57, 255, 20, 0.2);
-  border: 2px solid var(--green);
 }
 
-.cricket-ball {
+.aim-dot {
   position: absolute;
-  left: 50%; top: 50%;
-  width: 12px; height: 12px;
+  width: 12px;
+  height: 12px;
   margin: -6px 0 0 -6px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--mint);
+  box-shadow: 0 0 8px var(--mint-glow);
+  left: 50%;
+  top: 50%;
 }
 
-.btn-secondary, .btn-go {
+.aim-bar-v .aim-dot {
+  left: 50%;
+}
+
+.aim-bar-h .aim-dot {
+  top: 50%;
+}
+
+.aim-label {
+  font-size: 0.72rem;
+  color: var(--gray);
+}
+
+.btn-secondary,
+.btn-go {
   padding: 12px 18px;
   border: 1px solid var(--green);
   background: transparent;
   color: var(--green);
   font-weight: 700;
   cursor: pointer;
+  min-width: 140px;
+}
+
+.btn-go {
+  background: rgba(57, 255, 20, 0.08);
+  font-size: 1rem;
+  padding: 14px 22px;
 }
 
 .nav-btn {
@@ -855,6 +879,125 @@ body {
 }
 
 .nav-btn-main { color: var(--green); }
+
+.game-screen #game-root {
+  width: 100%;
+  padding-top: 8px;
+}
+
+.admin-secret-trigger {
+  margin-top: auto;
+  padding: 12px 8px 4px;
+  border: none;
+  background: transparent;
+  color: var(--green);
+  opacity: 0.7;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.admin-screen {
+  align-items: stretch;
+  text-align: left;
+}
+
+.admin-note {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+
+.admin-card h3 {
+  margin-top: 0;
+}
+
+.admin-card h4 {
+  margin: 12px 0 6px;
+  font-size: 0.85rem;
+  color: var(--green);
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+}
+
+.admin-field input {
+  padding: 8px;
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  background: #0a0a0a;
+  color: var(--white);
+}
+
+.admin-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+}
+
+.admin-scale {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-scale label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--green);
+}
+
+.admin-scale input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid rgba(57, 255, 20, 0.35);
+  background: #0a0a0a;
+  color: var(--white);
+}
+
+.admin-log-list {
+  max-height: 42dvh;
+  overflow-y: auto;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-log-item {
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  padding: 8px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.admin-log-item header {
+  color: var(--green);
+  margin-bottom: 4px;
+}
+
+.admin-log-item pre {
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--gray);
+  font-size: 0.7rem;
+}
 
 #open-hint {
   padding: 24px;
