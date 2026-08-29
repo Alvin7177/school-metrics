@@ -179,7 +179,7 @@
       </div>
       ${ee()}
     </div>
-  `);const n=b.querySelector("#profile-error"),r=b.querySelector("#profile-ok"),a=b.querySelector("#profile-name"),s=b.querySelector("#profile-sid"),i=b.querySelector("#profile-save");i.addEventListener("click",async()=>{n.classList.add("hidden"),r.classList.add("hidden"),i.disabled=!0;const l=await Mn({displayName:a.value,studentId:s.value});if(i.disabled=!1,!l.ok){n.textContent=l.error,n.classList.remove("hidden");return}r.textContent="저장되었습니다.",r.classList.remove("hidden"),K({type:"profile_update",message:`정보 수정: ${Ve(l.user)}`,displayName:l.user.displayName,studentId:l.user.studentId})}),V(b)}function ka(){const e=ae(),t=U(),n=!!(t!=null&&t.account)&&!O();b.innerHTML=R(`
+  `);const n=b.querySelector("#profile-error"),r=b.querySelector("#profile-ok"),a=b.querySelector("#profile-name"),s=b.querySelector("#profile-sid"),i=b.querySelector("#profile-save");i.addEventListener("click",async()=>{n.classList.add("hidden"),r.classList.add("hidden"),i.disabled=!0;const l=await Mn({displayName:a.value,studentId:s.value});if(i.disabled=!1,!l.ok){n.textContent=l.error,n.classList.remove("hidden");return}r.textContent="저장되었습니다.",r.classList.remove("hidden"),K({type:"profile_update",message:`정보 수정: ${Ve(l.user)}`,displayName:l.user.displayName,studentId:l.user.studentId})}),V(b)}function ka(){const e=ae(),t=U(),n=!!(t!=null&&t.account)&&!O()&&!(t!=null&&t.isAdminAccount)&&!String((t==null?void 0:t.account)||"").toLowerCase().includes("@gmail.com");b.innerHTML=R(`
     <div class="stack-screen">
       ${ie()}
       <h2 class="screen-title">앱 정보</h2>
@@ -200,14 +200,13 @@
         <p class="muted">제작: ${z.creator}</p>
         ${O()?'<p class="success"><button type="button" class="link-btn" data-action="admin">관리자 패널 열기</button></p>':""}
       </div>
-      ${n?`<div class="info-card">
+      ${n?`<div class="info-card withdraw-card">
         <h3>계정 탈퇴</h3>
-        <p class="muted">탈퇴하면 이 기기 기록이 지워지고, 같은 학교 계정으로 다시 회원가입할 수 있습니다.</p>
-        <label class="field">
+        <label class="withdraw-field">
           <span>비밀번호 확인</span>
           <input type="password" id="withdraw-password" placeholder="현재 비밀번호" autocomplete="current-password" />
         </label>
-        <button type="button" class="btn-secondary" id="btn-withdraw">계정 탈퇴</button>
+        <button type="button" class="btn-withdraw" id="btn-withdraw">계정 탈퇴</button>
         <p class="warn hidden" id="withdraw-error"></p>
       </div>`:""}
       ${ee()}
